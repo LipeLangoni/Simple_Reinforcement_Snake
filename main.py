@@ -238,19 +238,33 @@ for game in range(100000):
         clock.tick(60) 
         state = get_state(snake_pos, fruit_pos, direction, width, height)
         action = agent.choose_action(state[1])
+        previous = direction
         direction = performs_action(action)
 
 
         if direction == "right":
-            rect_pos[0]+=10
+            if previous == "left":
+                rect_pos[0]-=10
+            else:
+                rect_pos[0]+=10
         elif direction == "left":
-            rect_pos[0]-=10
+            if previous == "right":
+                rect_pos[0]+=10
+            else:
+                rect_pos[0]-=10
         elif direction == "up":
-            rect_pos[1]-=10
+            if previous == "down":
+                rect_pos[1]+=10
+            else:
+                rect_pos[1]-=10
         elif direction == "down":
-            rect_pos[1]+=10
+            if previous == "up":
+                rect_pos[1]-=10
+            else:
+                rect_pos[1]+=10
         
         if count >=1:
+
             if not (0 <= rect_pos[0] < width and 0 <= rect_pos[1] < height):
                 reward = -1
                 done = True
